@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "scitex-math"
-version = "0.1.0"
-description = "Mathematical utilities for the SciTeX ecosystem (parity helpers, etc.) — standalone module"
+version = "0.2.0"
+description = "Mathematical utilities for the SciTeX ecosystem (parity, normalization, ranks, transpose) — standalone module"
 readme = "README.md"
 license = "AGPL-3.0-only"
 requires-python = ">=3.9"
 authors = [{name = "Yusuke Watanabe", email = "ywatanabe@scitex.ai"}]
-keywords = ["scitex", "math", "parity", "to_even", "to_odd"]
+keywords = ["scitex", "math", "parity", "to_even", "to_odd", "normalization", "z-score"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -19,8 +19,12 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-# Pure-stdlib core — zero runtime deps.
-dependencies = []
+# Core: pure-stdlib for the parity helpers; numpy + scitex-decorators are
+# imported lazily on first access for the numeric / normalization symbols.
+dependencies = [
+    "numpy>=1.20",
+    "scitex-decorators>=0.1",
+]
 
 [project.optional-dependencies]
 dev = [
@@ -29,6 +33,10 @@ dev = [
     "pytest-cov",
     "ruff",
     "scitex-dev>=0.11.7",
+    "torch",
+]
+torch = [
+    "torch>=1.10",
 ]
 docs = [
     "sphinx>=7.0",

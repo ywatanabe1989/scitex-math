@@ -33,25 +33,39 @@ pip install scitex-math
 
 ```
 scitex_math/
-├── _to_even.py    ← to_even — round down to nearest even integer
-└── _to_odd.py     ← to_odd  — round down to nearest odd integer
+├── _to_even.py        ← to_even — round down to nearest even integer
+├── _to_odd.py         ← to_odd  — round down to nearest odd integer
+├── _connect_nums.py   ← connect_nums — join values with hyphens
+├── _float_linspace.py ← float_linspace — evenly spaced floats
+├── _symlog.py         ← symlog — symmetric log transform (numpy)
+├── _transpose.py      ← transpose — array transpose by named dims (numpy)
+├── _to_rank.py        ← to_rank — rank transform with tie averaging (torch)
+├── _norm.py           ← to_z / to_nanz / to_01 / to_nan01 /
+│                          unbias / clip_perc (torch-first)
+└── _norm_cache.py     ← cached variants of to_z / to_01
 ```
 
-Pure-stdlib core — zero runtime deps.
+Top-level imports are PEP 562 lazy — `import scitex_math` is cheap and
+pulls in neither `torch` nor `scitex_decorators`. Heavy symbols load on
+first attribute access.
 
 ## Quick Start
 
 ```python
-from scitex_math import to_even, to_odd
+from scitex_math import to_even, to_odd, symlog, to_z
 
 to_even(5)    # 4
 to_even(6)    # 6
 to_even(3.7)  # 2
-to_even(-2.3) # -4
 
-to_odd(6)     # 5
 to_odd(7)     # 7
-to_odd(5.8)   # 5
+
+import numpy as np
+symlog(np.array([-10, 0, 10]))  # symmetric log
+
+import torch
+x = torch.randn(2, 100)
+to_z(x, dim=-1)  # z-score along last dim
 ```
 
 ## Status
