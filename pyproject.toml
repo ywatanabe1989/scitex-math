@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scitex-math"
+version = "0.1.0"
+description = "Mathematical utilities for the SciTeX ecosystem (parity helpers, etc.) — standalone module"
+readme = "README.md"
+license = "AGPL-3.0-only"
+requires-python = ">=3.9"
+authors = [{name = "Yusuke Watanabe", email = "ywatanabe@scitex.ai"}]
+keywords = ["scitex", "math", "parity", "to_even", "to_odd"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+# Pure-stdlib core — zero runtime deps.
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "numpy",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "scitex-dev>=0.11.7",
+]
+docs = [
+    "sphinx>=7.0",
+    "sphinx-rtd-theme>=2.0",
+    "myst-parser>=2.0",
+    "sphinx-copybutton>=0.5",
+    "sphinx-autodoc-typehints>=1.25",
+]
+all = []
+
+[project.urls]
+Homepage = "https://github.com/ywatanabe1989/scitex-math"
+Repository = "https://github.com/ywatanabe1989/scitex-math"
+Documentation = "https://scitex-math.readthedocs.io"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--disable-warnings"]
+
+[tool.coverage.run]
+parallel = true
+source = ["scitex_math"]
+concurrency = ["multiprocessing", "thread"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I"]
+ignore = ["E501"]
+
+[tool.scitex-linter]
+library_dirs = ["src", "tests", "examples", "apps", "config", "docs"]
+
+[tool.scitex_dev.audit]
+# PS-168 — Per-package secret + env-var prefix in GitHub Actions workflows.
+# `GH_PERSONAL_ACCESS_TOKEN` is the ecosystem-wide cross-cutting PAT used
+# by the contributor-assistant CLA action. The natural GITHUB_* namespace
+# is reserved by GitHub Actions on the secret-name surface, so the GH_
+# shorthand is the canonical substitute and is registered ecosystem-wide
+# via EXCEPTION_SECRETS_DEFAULT in scitex-dev.
+ps168_secret_exceptions = ["GH_PERSONAL_ACCESS_TOKEN"]
