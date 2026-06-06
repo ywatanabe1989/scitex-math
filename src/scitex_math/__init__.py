@@ -13,6 +13,11 @@ Numeric transforms (numpy / torch):
 - :func:`transpose`      — array transpose by named dims.
 - :func:`connect_nums`   — join values with hyphens.
 - :func:`float_linspace` — evenly spaced floats.
+- :func:`find_closest`   — locate the closest element in a sorted list.
+
+Helpers (note nonstandard semantics — see each docstring):
+- :func:`isclose`        — element-wise closeness, returns ``list[bool]``.
+- :func:`is_nan`         — assert-style; raises ``ValueError`` on any NaN.
 
 Normalization (torch-first, also accepts numpy via @torch_fn):
 - :func:`to_z`, :func:`to_nanz`   — z-score / nan-aware z-score.
@@ -55,6 +60,9 @@ _LAZY_ATTRS: dict[str, str] = {
     # Numpy-only
     "symlog": "._symlog",
     "float_linspace": "._float_linspace",
+    "find_closest": "._find_closest",
+    "isclose": "._isclose",
+    "is_nan": "._is_nan",
     # Torch-backed (lazy: torch only loaded on first access)
     "to_rank": "._to_rank",
     "transpose": "._transpose",
@@ -95,7 +103,10 @@ __all__ = [
     "__version__",
     "clip_perc",
     "connect_nums",
+    "find_closest",
     "float_linspace",
+    "is_nan",
+    "isclose",
     "symlog",
     "to_01",
     "to_even",

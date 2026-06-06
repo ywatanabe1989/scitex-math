@@ -23,6 +23,7 @@ classifiers = [
 # imported lazily on first access for the numeric / normalization symbols.
 dependencies = [
     "numpy>=1.20",
+    "pandas>=1.0",
     "scitex-decorators>=0.1",
 ]
 
