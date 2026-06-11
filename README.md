@@ -17,6 +17,7 @@
   <a href="https://pypi.org/project/scitex-math/"><img src="https://img.shields.io/pypi/v/scitex-math.svg" alt="PyPI"></a>
   <a href="https://pypi.org/project/scitex-math/"><img src="https://img.shields.io/pypi/pyversions/scitex-math.svg" alt="Python"></a>
   <a href="https://github.com/ywatanabe1989/scitex-math/actions/workflows/pytest-matrix-on-ubuntu-py3-11-3-12-3-13.yml"><img src="https://github.com/ywatanabe1989/scitex-math/actions/workflows/pytest-matrix-on-ubuntu-py3-11-3-12-3-13.yml/badge.svg" alt="Tests"></a>
+  <a href="https://codecov.io/gh/ywatanabe1989/scitex-math"><img src="https://img.shields.io/codecov/c/github/ywatanabe1989/scitex-math" alt="coverage"></a>
   <a href="https://www.gnu.org/licenses/agpl-3.0"><img src="https://img.shields.io/badge/license-AGPL_v3-blue.svg" alt="License: AGPL v3"></a>
 </p>
 <!-- scitex-badges:end -->
@@ -38,6 +39,19 @@ scitex_math/
 ```
 
 Pure-stdlib core — zero runtime deps.
+
+## 2 Interfaces
+
+scitex-math ships **two** public interfaces, both pure-stdlib:
+
+| Interface | Export | Purpose |
+|---|---|---|
+| Python API | `from scitex_math import to_even, to_odd` | round-down-to-nearest-parity helpers used directly in scientific code |
+| Console script | _(none)_ | scitex-math is a library — no CLI surface; reach for `scitex-math` through the Python import path or the SciTeX umbrella |
+
+The library deliberately has no CLI, no MCP server, no Skill leaf, and
+no peer extras. Adding any of those would create surface area that
+isn't needed for the round-down semantics this package owns.
 
 ## Quick Start
 
