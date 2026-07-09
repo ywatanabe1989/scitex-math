@@ -13,21 +13,17 @@ permissions:
   statuses: write
 
 jobs:
-  CLAssistant:
-    runs-on: ubuntu-latest
-    steps:
-      - name: CLA Assistant
-        uses: contributor-assistant/github-action@v2.6.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-        with:
-          path-to-signatures: "signatures/cla.json"
-          path-to-document: "https://github.com/ywatanabe1989/scitex-dev/blob/main/CLA.md"
-          branch: "cla-signatures"
-          allowlist: bot*,ywatanabe1989,LLEmacs
-          custom-allsigned-prcomment: |
-            Thank you for signing the SciTeX CLA. Your contribution can now be reviewed.
-          custom-notsigned-prcomment: |
-            Please sign the [SciTeX CLA](https://github.com/ywatanabe1989/scitex-dev/blob/main/CLA.md) before your contribution can be merged.
-            Comment `I have read and agree to the SciTeX CLA.` to sign.
+  # NOTE: the pre-migration job hardcoded path-to-document to
+  # ywatanabe1989/scitex-dev/blob/main/CLA.md (a stale copy-paste from
+  # before this repo had its own CLA.md). The reusable workflow rebuilds
+  # the CLA doc URL from the CALLING repo (${{ github.repository }}),
+  # i.e. ywatanabe1989/scitex-math/blob/main/CLA.md — this repo already
+  # has its own CLA.md at the root with identical content, so this is a
+  # same-content link fix, not a behavior regression.
+  # owner_allowlist differs from the reusable default ("bot*,ywatanabe1989")
+  # by the extra "LLEmacs" login — kept via explicit override below.
+  call:
+    uses: scitex-ai/.github/.github/workflows/cla.yml@main
+    with:
+      owner_allowlist: "bot*,ywatanabe1989,LLEmacs"
+    secrets: inherit
