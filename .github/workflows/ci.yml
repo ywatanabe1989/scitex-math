@@ -20,6 +20,19 @@ on:
     - cron: "0 17 * * *" # nightly 17:00 UTC (~02:00 JST), off-peak
   workflow_dispatch:
 
+# ISOLATION (not serialization): concurrent jobs on the self-hosted Spartan
+# runner share $HOME=/home/ywatanabe. `actions/checkout` runs
+# `git config --global --add safe.directory <workspace>`, which locks
+# ~/.gitconfig; two concurrent jobs collide ("could not lock config file
+# .../.gitconfig: File exists" -> exit 255), and a job killed mid-checkout
+# (cancel-in-progress) can strand ~/.gitconfig.lock, reddening the SAME sha
+# that was green a day earlier. Point every job's `--global` git writes at a
+# per-job temp file so jobs stay FULLY PARALLEL and never touch the shared
+# ~/.gitconfig. runner.temp is unique per runner instance (one per concurrent
+# job). Requires git >= 2.32 (runners have 2.43).
+env:
+  GIT_CONFIG_GLOBAL: ${{ runner.temp }}/gitconfig
+
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
